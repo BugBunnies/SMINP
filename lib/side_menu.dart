@@ -16,11 +16,15 @@ class SideMenu extends StatelessWidget {
                         gradient: RadialGradient(
                           center: Alignment.topCenter,
                           colors: [
-                            Colors.blueAccent,
-                            Colors.lightGreen,
+                            Colors.purple[500],
+                            Colors.purple[500],
+                            Colors.purple[600],
+                            Colors.purple[700],
+                            Colors.purple[800],
+                            Colors.purple[900],
                             Colors.white,
                           ],
-                          stops: [0.2, 0.3, 0.2],
+                          stops: [ 0.05,0.1,0.15,0.2,0.25,0.3,0.3],
                           radius: 2,
                         ),
                     ),
@@ -35,7 +39,7 @@ class SideMenu extends StatelessWidget {
                           child:
                           DrawerHeader(
                             child: Text(
-                              'More options',
+                              'Chill Menu',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 24,
@@ -58,12 +62,24 @@ class SideMenu extends StatelessWidget {
                             );
                           },
                           child: Container(
+                          decoration: BoxDecoration(
+                            color : Colors.white,
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(20), topLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20.0), bottomLeft: Radius.circular(20.0)),
+                              boxShadow: [
+                          BoxShadow(
+                          color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 3,
+                        blurRadius: 4,
+                        offset: Offset(4, 7), // changes position of shadow
+                      ),
+]
+                              
+                      ),
                             padding: const EdgeInsets.all(8),
                             child: Text(value.toString()),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10.0),
-                              color: Colors.blue,
-                            ),
+
                           )
                       );
                     }).toList(),
