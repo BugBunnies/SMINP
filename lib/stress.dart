@@ -13,38 +13,52 @@ class Stressometer extends StatefulWidget {
 class _HomeState extends State<Stressometer> {
   @override
   Widget build (BuildContext context) {
+    final List<int> stresslevels = <int>[100, 75, 20, 32, 40, 120, 65];
+    int sum=0, i = 0;
+    stresslevels.forEach((num)=> sum+=num);
+    stresslevels.forEach((index)=> i++);
+    double avg = sum/i;
+    i = avg.toInt();
+    String stringValue = i.toString();
     return Scaffold(
-      body:
-          Container(
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
-            color: Colors.deepPurple[600],
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      body: Stack(
+          alignment: Alignment.center,
 
-                children: [
-                    Text("Your current stress level is:",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 25.0,
-                          fontWeight: FontWeight.w600,
-                        )
-                    ),
-                  SizedBox(height: 20),
-                    Text("70",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 70.0,
-                          fontWeight: FontWeight.w600,
-                        )
-                    )
-                  ],
-              ),
-          ),
-        drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
+          children: <Widget>[
+          Container(
+          width: 400,
+          height: 600,
+          child: Image(
+            image : AssetImage('image2.png'),
+            fit: BoxFit.contain,
+          )
+      ),
+            Positioned(
+              child:
+              Text("Wellness Statistics", style: TextStyle(color: Colors.black, fontSize: 40, fontWeight: FontWeight.bold),),
+              top: 40,
+              left: 20,
+            ),
+
+      Positioned(
+      child:
+      Container(
+        child: Center(
+            child: Text('Today\'s stress level \n               $stringValue',style: TextStyle(color: Colors.white, fontSize: 20,fontWeight: FontWeight.bold))),
+        width: 300,
+        height: 100,
+        decoration: BoxDecoration(
+          color: Colors.deepPurple[600],
+          borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40),bottomLeft: Radius.circular(40),bottomRight: Radius.circular(40)),
+        ),
+      ),
+
+    top: 130,
+    left: 55,
+      ),
+          ],
+      ),
+      drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
     );
   }
 }

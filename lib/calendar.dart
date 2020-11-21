@@ -11,15 +11,25 @@ class Task{
   bool isMandatory;
   int period;
 
-  Task(this.taskName, this.stressLevel, this.taskDateTime);
+  Task(this.taskName, this.stressLevel, this.taskDateTime, this.isMandatory);
 }
 
 List<List<Task>> megaTasks = List<List<Task>>();
 
 //second screen -> schedule
 class Calendar extends StatefulWidget {
+
+  String date = "";
+
+
+  Calendar.string(this.date);
+  Calendar();
+
+  // @override
+  // _CalendarState createState() => _CalendarState();
+
   @override
-  _CalendarState createState() => _CalendarState();
+  _CalendarState createState() => _CalendarState.string(date);
 }
 
 void initList(){
@@ -28,7 +38,26 @@ void initList(){
   }
 }
 
+final days = <String>[
+  'Monday',
+  'Tuesday',
+  'Wednesday',
+  'Thursday',
+  'Friday',
+  'Saturday',
+  'Sunday'
+];
+
 class _CalendarState extends State<Calendar> {
+
+  DateTime activeDate = DateTime.now();
+  String currentDay;
+
+  _CalendarState.date(this.activeDate);
+  _CalendarState.string(this.currentDay);
+  _CalendarState(){
+    this.activeDate = DateTime.now();
+  }
 
   final TextEditingController eCtrl = new TextEditingController();
   @override
@@ -40,6 +69,18 @@ class _CalendarState extends State<Calendar> {
     final List<Color> colorCodes = <Color>[Colors.lightBlue, Colors.cyan,
       Colors.teal, Colors.green, Colors.lightGreen, Colors.lime, Colors.yellow,
       Colors.orange, Colors.deepOrange, Colors.red];
+
+    if(currentDay == "") {
+      if (activeDate.day == DateTime.now().day && activeDate.month == DateTime.now().month &&
+          activeDate.year == DateTime
+              .now()
+              .year)
+        currentDay = "Today";
+      else
+        currentDay = days[activeDate.weekday - 1];
+    }
+
+
     return Scaffold(
       backgroundColor: Colors.deepPurple[600],
       body: Stack(
@@ -57,7 +98,7 @@ class _CalendarState extends State<Calendar> {
 
           Positioned(
             child:
-            Text("Today's tasks", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
+            Text("${currentDay}'s tasks", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
             top: 40,
             left: 20,
           ),
@@ -70,6 +111,7 @@ class _CalendarState extends State<Calendar> {
                 overflow: Overflow.visible,
                 children: <Widget>[
                   Container(
+                    padding: EdgeInsets.only(top:10.0),
                     decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40)),
@@ -91,7 +133,9 @@ class _CalendarState extends State<Calendar> {
                               ),
                                   onPress: (){}, backgroudColor: Colors.white)
                             ],
-                            child: Container(decoration: BoxDecoration(
+                            child: Container(
+                              padding: EdgeInsets.all(4.0),
+                              decoration: BoxDecoration(
                               shape: BoxShape.rectangle,
                               color: colorCodes[megaTasks[DateTime.now().weekday - 1][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.7),
                               borderRadius: BorderRadius.only(
@@ -100,14 +144,14 @@ class _CalendarState extends State<Calendar> {
                               boxShadow: [
                                 BoxShadow(
                                   color: colorCodes[megaTasks[DateTime.now().weekday - 1][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.3),
-                                  spreadRadius: 3,
+                                  spreadRadius: 2,
                                   blurRadius: 4,
-                                  offset: Offset(7, 5), // changes position of shadow
+                                  offset: Offset(4, 5), // changes position of shadow
                                 ),
                               ],
 
                             ),
-                              height: 70,
+                              height: 80,
                               child: Center(
                                   child: ListTile(
                                     title: Text("${megaTasks[DateTime.now().weekday - 1][index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
@@ -143,7 +187,7 @@ class _CalendarState extends State<Calendar> {
                                   setState(() {
                                     final activeTask = Task(nameController.text,
                                         int.parse(stressLevelController.text),
-                                        DateTime.now());
+                                        DateTime.now(), _isMandatory);
                                     int hour = int.parse(hourController.text);
                                     int minute = int.parse(minuteController.text);
                                     activeTask.taskDateTime = DateTime(activeTask.taskDateTime.year,
@@ -151,7 +195,6 @@ class _CalendarState extends State<Calendar> {
                                         hour, minute);
                                     megaTasks.elementAt(DateTime.now().weekday - 1).add(activeTask);
                                     Navigator.of(context, rootNavigator: true).pop();
-                                    print(_isMandatory);
                                   });
                                 },
                                 child: Text("Add Task")
@@ -217,7 +260,7 @@ class _CalendarState extends State<Calendar> {
                                               _isMandatory = !_isMandatory;
                                             });
                                         },
-                                      )
+                                      ),
                                     ],
                                 ),
                               actions: [

@@ -34,7 +34,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
             // When the child is tapped, show a snackbar.
             onTap: () {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => Calendar()));
+                  builder: (BuildContext context) => Calendar.string(entries[index])));
             },
             child: Container(
               decoration : new BoxDecoration(
