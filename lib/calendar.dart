@@ -13,7 +13,7 @@ class Task{
 }
 
 List<Task> tasks = List<Task>();
-Map<int, Task> dict = Map<int, Task>();
+List<List<Task>> megaTasks = List<List<Task>>();
 
 //second screen -> schedule
 class Calendar extends StatefulWidget {
@@ -21,11 +21,24 @@ class Calendar extends StatefulWidget {
   _CalendarState createState() => _CalendarState();
 }
 
+void initList(){
+  for(int i = 0; i < 7; ++i){
+    megaTasks.add(new List<Task>());
+  }
+}
+
 class _CalendarState extends State<Calendar> {
 
   final TextEditingController eCtrl = new TextEditingController();
   @override
   Widget build (BuildContext ctxt) {
+
+    if(megaTasks.isEmpty){
+      print("Time to init");
+      initList();
+      print(megaTasks);
+    }
+
     final List<Color> colorCodes = <Color>[Colors.lightBlue, Colors.cyan,
       Colors.teal, Colors.green, Colors.lightGreen, Colors.lime, Colors.yellow,
       Colors.orange, Colors.deepOrange, Colors.red];
@@ -68,7 +81,6 @@ class _CalendarState extends State<Calendar> {
                       itemCount: tasks.length,
                       itemBuilder: (context, index){
 
-                        final item = dict[index];
                         return OnSlide(
                             items: <ActionItems>[
                               new ActionItems(icon: new IconButton(
@@ -84,13 +96,13 @@ class _CalendarState extends State<Calendar> {
                             ],
                             child: Container(decoration: BoxDecoration(
                               shape: BoxShape.rectangle,
-                              color: colorCodes[tasks[index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.7),
+                              color: colorCodes[megaTasks[DateTime.now().weekday - 1][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.7),
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(40), topLeft: Radius.circular(40),
                                   bottomRight: Radius.circular(40.0), bottomLeft: Radius.circular(40.0)),
                               boxShadow: [
                                 BoxShadow(
-                                  color: colorCodes[tasks[index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.3),
+                                  color: colorCodes[megaTasks[DateTime.now().weekday - 1][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.3),
                                   spreadRadius: 3,
                                   blurRadius: 4,
                                   offset: Offset(7, 5), // changes position of shadow
@@ -101,7 +113,7 @@ class _CalendarState extends State<Calendar> {
                               height: 70,
                               child: Center(
                                   child: ListTile(
-                                    title: Text("${tasks[index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
+                                    title: Text("${megaTasks[DateTime.now().weekday - 1][index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
                                     subtitle: Text("Text box of the task", style: TextStyle(color: Colors.grey[700]),),
                                     trailing: Icon(Icons.check_circle, color: Colors.greenAccent,),
                                     isThreeLine: true,
@@ -131,8 +143,8 @@ class _CalendarState extends State<Calendar> {
                                         int.parse(stressLevelController.text),
                                         DateTime.parse(dateController.text));
                                     // tasks.add(activeTask);
-                                    dict.update(activeTask.taskDate.weekday,
-                                            (value) => activeTask);
+                                    megaTasks.elementAt(activeTask.taskDate.weekday - 1).add(activeTask);
+                                    print(megaTasks);
                                     Navigator.of(context, rootNavigator: true).pop();
                                   });
                                 },
