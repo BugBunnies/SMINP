@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:smip/all.dart';
 
 
 class Stressometer extends StatefulWidget {
@@ -35,7 +36,8 @@ class _HomeState extends State<Stressometer> {
             )
           )
         ]
-      )
+      ),
+      drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
     );
   }
 }
