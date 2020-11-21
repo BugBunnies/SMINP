@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:smip/all.dart';
+import 'all.dart';
 
 
 class Stressometer extends StatefulWidget {

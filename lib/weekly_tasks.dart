@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:smip/all.dart';
+import 'all.dart';
 
 // Weekly Tasks
 class WeeklyTasks extends StatefulWidget
@@ -25,30 +25,86 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ListView.separated(
-        padding: const EdgeInsets.all(10),
-        itemCount: entries.length,
-        itemBuilder: (BuildContext context, int index) {
+      backgroundColor: Colors.blue[900],
+      body: Stack(
+        alignment: Alignment.center,
 
-          return GestureDetector(
-            // When the child is tapped, show a snackbar.
-            onTap: () {
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (BuildContext context) => Calendar.string(entries[index])));
+        children: <Widget>[
+          Container(
+              width: 400,
+              height: 600,
+              child: Image(
+                image : AssetImage('image.png'),
+                fit: BoxFit.contain,
+              )
+          ),
+
+          Positioned(
+            child:
+            Text("Weekly Tasks", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
+            top: 40,
+            left: 20,
+          ),
+
+          DraggableScrollableSheet(
+            maxChildSize: 0.85,
+            minChildSize: 0.1,
+            builder: (BuildContext context, ScrollController scrolController){
+              return Stack(
+                overflow: Overflow.visible,
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(top:10.0),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(topRight: Radius.circular(40), topLeft: Radius.circular(40)),
+                    ),
+                    child: ListView.separated(
+                      itemCount: entries.length,
+                      padding: const EdgeInsets.all(10),
+                      itemBuilder: (context, index){
+                        return GestureDetector(
+                          // When the child is tapped, show a snackbar.
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                                  builder: (BuildContext context) => Calendar.string(entries[index])));
+                            },
+                            child: Container(
+
+                              padding: EdgeInsets.all(4.0),
+                              decoration: BoxDecoration(
+                                color: Colors.lightBlue,
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.only(
+                                    topRight: Radius.circular(40), topLeft: Radius.circular(40),
+                                    bottomRight: Radius.circular(40.0), bottomLeft: Radius.circular(40.0)),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color : Colors.grey,
+                                    spreadRadius: 2,
+                                    blurRadius: 4,
+                                    offset: Offset(4, 5), // changes position of shadow
+                                  ),
+                                ],
+
+                              ),
+                              height:80,
+                              child: Center(
+                                  child: Text('${entries[index]}',style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold))),
+
+                            )
+                        );
+
+                      }, separatorBuilder: (BuildContext context, int index) => const Divider(),
+                      controller: scrolController,
+                    ),
+                  )
+                ],
+              );
             },
-            child: Container(
-              decoration : new BoxDecoration(
-                  color: Colors.blue[colorCodes[index]],
-                  borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(25.0),
-                      bottomRight: Radius.circular(25.0))
-              ),
-              height: 80,
-              child: Center(child: Text('${entries[index]}')),
-            ),
-          );
-        },
-        separatorBuilder: (BuildContext context, int index) => const Divider(),
+          )
+
+        ],
       ),
       drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
     );

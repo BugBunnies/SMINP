@@ -154,9 +154,9 @@ class _CalendarState extends State<Calendar> {
                               height: 80,
                               child: Center(
                                   child: ListTile(
-                                    title: Text("${megaTasks[DateTime.now().weekday - 1][index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
-                                    subtitle: Text("Text box of the task", style: TextStyle(color: Colors.grey[700]),),
-                                    trailing: Icon(Icons.check_circle, color: Colors.greenAccent,),
+                                    title: Text("  ${megaTasks[DateTime.now().weekday - 1][index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
+                                    subtitle: Text("  Text box of the task", style: TextStyle(color: Colors.grey[700]),),
+                                    trailing: Icon(Icons.check_circle, color: Colors.white,),
                                     isThreeLine: true,
                                   )),
                             ),
