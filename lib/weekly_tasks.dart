@@ -25,11 +25,18 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.separated(
-          padding: const EdgeInsets.all(10),
-          itemCount: entries.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Container(
+      body: ListView.separated(
+        padding: const EdgeInsets.all(10),
+        itemCount: entries.length,
+        itemBuilder: (BuildContext context, int index) {
+
+          return GestureDetector(
+            // When the child is tapped, show a snackbar.
+            onTap: () {
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (BuildContext context) => Calendar()));
+            },
+            child: Container(
               decoration : new BoxDecoration(
                   color: Colors.blue[colorCodes[index]],
                   borderRadius: BorderRadius.only(
@@ -38,11 +45,12 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
               ),
               height: 80,
               child: Center(child: Text('${entries[index]}')),
-            );
-          },
-          separatorBuilder: (BuildContext context, int index) => const Divider(),
-        ),
-        drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
+            ),
+          );
+        },
+        separatorBuilder: (BuildContext context, int index) => const Divider(),
+      ),
+      drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
     );
   }
 }

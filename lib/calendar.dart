@@ -7,9 +7,11 @@ import 'all.dart';
 class Task{
   String taskName;
   int stressLevel;
-  DateTime taskDate;
+  DateTime taskDateTime;
+  bool isMandatory;
+  int period;
 
-  Task(this.taskName, this.stressLevel, this.taskDate);
+  Task(this.taskName, this.stressLevel, this.taskDateTime);
 }
 
 List<List<Task>> megaTasks = List<List<Task>>();
@@ -131,20 +133,27 @@ class _CalendarState extends State<Calendar> {
                           final dateController = TextEditingController();
 
                           return showDialog(context: context, builder:(dialogContext) {
+
+                            //alert dialog button to submit whatever the user wrote
                             Widget okButton = FlatButton(
                                 onPressed: () {
                                   setState(() {
                                     final activeTask = Task(nameController.text,
                                         int.parse(stressLevelController.text),
-                                        DateTime.parse(dateController.text));
-                                    // tasks.add(activeTask);
-                                    megaTasks.elementAt(activeTask.taskDate.weekday - 1).add(activeTask);
-                                    print(megaTasks.elementAt(activeTask.taskDate.weekday - 1).elementAt(0).taskName);
+                                        DateTime.now());
+                                    int hour = int.parse(dateController.text.split(':')[0]);
+                                    int minute = int.parse(dateController.text.split(':')[1]);
+                                    activeTask.taskDateTime = DateTime(activeTask.taskDateTime.year,
+                                        activeTask.taskDateTime.month, activeTask.taskDateTime.day,
+                                        hour, minute);
+                                    megaTasks.elementAt(DateTime.now().weekday - 1).add(activeTask);
+                                    // print(activeTask.taskDateTime.hour);
                                     Navigator.of(context, rootNavigator: true).pop();
                                   });
                                 },
-                                child: Text("Submit")
+                                child: Text("Add Task")
                             );
+
                             return AlertDialog(
                                 title : Text("Input the Stress Level "),
                                 content: Column(
@@ -181,7 +190,7 @@ class _CalendarState extends State<Calendar> {
                                             ),
                                           ),
                                         ),
-                                        keyboardType: TextInputType.number,
+                                        keyboardType: TextInputType.text,
                                         controller: dateController,
                                       ),
                                     ],
