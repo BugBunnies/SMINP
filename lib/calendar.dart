@@ -7,13 +7,15 @@ import 'all.dart';
 class Task{
   String taskName;
   int stressLevel;
+  DateTime taskDate;
 
-  Task(this.taskName, this.stressLevel);
+  Task(this.taskName, this.stressLevel, this.taskDate);
 }
 
 List<Task> tasks = List<Task>();
+Map<int, Task> dict = Map<int, Task>();
 
-//second screen ->schedule
+//second screen -> schedule
 class Calendar extends StatefulWidget {
   @override
   _CalendarState createState() => _CalendarState();
@@ -66,48 +68,46 @@ class _CalendarState extends State<Calendar> {
                       itemCount: tasks.length,
                       itemBuilder: (context, index){
 
-                        final item = tasks[index];
-                        return Dismissible(
-                          key: Key(item.taskName),
-                          onDismissed: (direction){
-                            setState(() {
-                              tasks.removeAt(index);
-                            });
-                          },
-                          child: Container(decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            color: colorCodes[tasks[index].stressLevel % (colorCodes.length + 1) - 1],
-                            borderRadius: BorderRadius.only(
-                                topRight: Radius.circular(40), topLeft: Radius.circular(40),
-                                bottomRight: Radius.circular(40.0), bottomLeft: Radius.circular(40.0)),
-                            boxShadow: [
-                              BoxShadow(
-                                color: colorCodes[tasks[index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.3),
-                                spreadRadius: 3,
-                                blurRadius: 4,
-                                offset: Offset(7, 5), // changes position of shadow
+                        final item = dict[index];
+                        return OnSlide(
+                            items: <ActionItems>[
+                              new ActionItems(icon: new IconButton(
+                                  icon: new Icon(Icons.delete),
+                                  onPressed: () {}, color: Colors.red,
+                                ),
+                                onPress: (){}, backgroudColor: Colors.white),
+                              new ActionItems(icon: new IconButton(
+                                icon: new Icon(Icons.edit),
+                                onPressed: () {}, color: Colors.green,
                               ),
+                                  onPress: (){}, backgroudColor: Colors.white)
                             ],
+                            child: Container(decoration: BoxDecoration(
+                              shape: BoxShape.rectangle,
+                              color: colorCodes[tasks[index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.7),
+                              borderRadius: BorderRadius.only(
+                                  topRight: Radius.circular(40), topLeft: Radius.circular(40),
+                                  bottomRight: Radius.circular(40.0), bottomLeft: Radius.circular(40.0)),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: colorCodes[tasks[index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.3),
+                                  spreadRadius: 3,
+                                  blurRadius: 4,
+                                  offset: Offset(7, 5), // changes position of shadow
+                                ),
+                              ],
 
-                          ),
-                            height: 70,
-                            child: Center(child: ListTile(
-                              title: Text("${tasks[index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold),),
-                              subtitle: Text("Text box of the task", style: TextStyle(color: Colors.grey[700]),),
-                              trailing: Icon(Icons.check_circle, color: Colors.greenAccent,),
-                              isThreeLine: true,
-                            )),
-                          ),
-                          background: Container(
-                            color: Colors.red,
-                          ),
+                            ),
+                              height: 70,
+                              child: Center(
+                                  child: ListTile(
+                                    title: Text("${tasks[index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
+                                    subtitle: Text("Text box of the task", style: TextStyle(color: Colors.grey[700]),),
+                                    trailing: Icon(Icons.check_circle, color: Colors.greenAccent,),
+                                    isThreeLine: true,
+                                  )),
+                            ),
                         );
-                        // return ListTile(
-                        //   title: Text("Task's name", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold),),
-                        //   subtitle: Text("Text box of the task", style: TextStyle(color: Colors.grey[700]),),
-                        //   trailing: Icon(Icons.check_circle, color: Colors.greenAccent,),
-                        //   isThreeLine: true,
-                        // );
                       },
                       controller: scrolController,
                       separatorBuilder: (BuildContext context, int index) => const Divider(),
@@ -120,7 +120,24 @@ class _CalendarState extends State<Calendar> {
                         backgroundColor: Colors.pinkAccent,
                         onPressed: (){
                           final nameController = TextEditingController();
+                          final stressLevelController = TextEditingController();
+                          final dateController = TextEditingController();
+
                           return showDialog(context: context, builder:(dialogContext) {
+                            Widget okButton = FlatButton(
+                                onPressed: () {
+                                  setState(() {
+                                    final activeTask = Task(nameController.text,
+                                        int.parse(stressLevelController.text),
+                                        DateTime.parse(dateController.text));
+                                    // tasks.add(activeTask);
+                                    dict.update(activeTask.taskDate.weekday,
+                                            (value) => activeTask);
+                                    Navigator.of(context, rootNavigator: true).pop();
+                                  });
+                                },
+                                child: Text("Submit")
+                            );
                             return AlertDialog(
                                 title : Text("Input the Stress Level "),
                                 content: Column(
@@ -138,7 +155,7 @@ class _CalendarState extends State<Calendar> {
                                       ),
                                       TextField(
                                           decoration: new InputDecoration(
-                                            labelText: "Stress Level",
+                                            labelText: "Stress Level: ",
                                             fillColor: Colors.white,
                                             border: new OutlineInputBorder(
                                               borderSide: new BorderSide(
@@ -146,18 +163,25 @@ class _CalendarState extends State<Calendar> {
                                             ),
                                           ),
                                           keyboardType: TextInputType.number,
-                                          //   controller: new TextEditingController(),
-                                          onSubmitted: (text) {
-                                            setState(() {
-                                              final activeTask = Task(nameController.text,
-                                                  int.parse(text));
-                                              tasks.add(activeTask);
-                                              eCtrl.clear();
-                                            });
-                                            Navigator.of(context).pop();
-                                          }
-                                      )]
-                                )
+                                          controller: stressLevelController,
+                                      ),
+                                      TextField(
+                                        decoration: new InputDecoration(
+                                          labelText: "Date time: ",
+                                          fillColor: Colors.white,
+                                          border: new OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                            ),
+                                          ),
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                        controller: dateController,
+                                      ),
+                                    ],
+                                ),
+                              actions: [
+                                okButton
+                              ],
                             );
                           });
                         }
@@ -172,7 +196,7 @@ class _CalendarState extends State<Calendar> {
 
         ],
       ),
-      drawer: SideMenu([Calendar(), WeeklyTasks()]),
+      drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
     );
   }
 }

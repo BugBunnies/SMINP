@@ -42,7 +42,7 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
           },
           separatorBuilder: (BuildContext context, int index) => const Divider(),
         ),
-        drawer: SideMenu([Calendar(), WeeklyTasks()]),
+        drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
     );
   }
 }
