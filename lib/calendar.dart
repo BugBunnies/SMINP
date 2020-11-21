@@ -251,16 +251,17 @@ class _CalendarState extends State<Calendar> {
                                         keyboardType: TextInputType.datetime,
                                         controller: minuteController,
                                       ),
-                                      CheckboxListTile(
+                                      StatefulBuilder(
+                                        builder: (context, _setState) => CheckboxListTile(
                                           title: Text("Is your task mandatory?"),
                                           tristate: true,
                                           value: _isMandatory,
                                           onChanged: (bool value) {
-                                            setState(() {
-                                              _isMandatory = !_isMandatory;
-                                            });
-                                        },
-                                      ),
+                                            _setState(() => _isMandatory = !_isMandatory,
+                                            );
+                                          },
+                                        ),
+                                      )
                                     ],
                                 ),
                               actions: [
