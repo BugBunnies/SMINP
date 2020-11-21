@@ -34,10 +34,17 @@ final days = <String>[
   'Sunday'
 ];
 
+int getInt(String day){
+  for(int i = 0; i < days.length; ++i)
+    if(days[i] == day)
+      return i;
+}
+
 class _CalendarState extends State<Calendar> {
 
   DateTime activeDate = DateTime.now();
   String currentDay;
+  int activeDate_weekday;
 
   _CalendarState.date(this.activeDate);
   _CalendarState.string(this.currentDay);
@@ -54,14 +61,24 @@ class _CalendarState extends State<Calendar> {
       Colors.orange, Colors.deepOrange, Colors.red];
 
     if(currentDay == "") {
-      if (activeDate.day == DateTime.now().day && activeDate.month == DateTime.now().month &&
+      if (activeDate.day == DateTime
+          .now()
+          .day && activeDate.month == DateTime
+          .now()
+          .month &&
           activeDate.year == DateTime
               .now()
               .year)
         currentDay = "Today";
       else
-        currentDay = days[activeDate.weekday - 1];
+        currentDay = days[activeDate_weekday];
     }
+    if(currentDay != "Today")
+      activeDate_weekday = getInt(currentDay);
+    else
+      activeDate_weekday = activeDate.weekday - 1;
+
+    print(activeDate_weekday);
 
     return Scaffold(
       backgroundColor: Colors.deepPurple[600],
@@ -70,11 +87,11 @@ class _CalendarState extends State<Calendar> {
 
         children: <Widget>[
           Container(
-              width: 400,
-              height: 600,
+              height: 1000,
+              width: 700,
               child: Image(
-                image : AssetImage('image.png'),
-                fit: BoxFit.contain,
+                image : AssetImage('background.png'),
+                fit: BoxFit.fitHeight,
               )
           ),
 
@@ -100,7 +117,7 @@ class _CalendarState extends State<Calendar> {
                     ),
                     child: ListView.separated(
                       padding: const EdgeInsets.all(10),
-                      itemCount: megaTasks[DateTime.now().weekday - 1].length,
+                      itemCount: megaTasks[activeDate_weekday].length,
                       itemBuilder: (context, index){
                         return OnSlide(
                             items: <ActionItems>[
@@ -119,13 +136,15 @@ class _CalendarState extends State<Calendar> {
                               padding: EdgeInsets.all(4.0),
                               decoration: BoxDecoration(
                               shape: BoxShape.rectangle,
-                              color: colorCodes[megaTasks[DateTime.now().weekday - 1][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.7),
+                              // color: colorCodes[megaTasks[DateTime.now().weekday - 1][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.7),
+                              color: colorCodes[megaTasks[activeDate_weekday][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.7),
                               borderRadius: BorderRadius.only(
                                   topRight: Radius.circular(40), topLeft: Radius.circular(40),
                                   bottomRight: Radius.circular(40.0), bottomLeft: Radius.circular(40.0)),
                               boxShadow: [
                                 BoxShadow(
-                                  color: colorCodes[megaTasks[DateTime.now().weekday - 1][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.3),
+                                  // color: colorCodes[megaTasks[DateTime.now().weekday - 1][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.3),
+                                  color: colorCodes[megaTasks[activeDate_weekday][index].stressLevel % (colorCodes.length + 1) - 1].withOpacity(0.3),
                                   spreadRadius: 2,
                                   blurRadius: 4,
                                   offset: Offset(4, 5), // changes position of shadow
@@ -136,7 +155,8 @@ class _CalendarState extends State<Calendar> {
                               height: 80,
                               child: Center(
                                   child: ListTile(
-                                    title: Text("  ${megaTasks[DateTime.now().weekday - 1][index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
+                                    // title: Text("  ${megaTasks[DateTime.now().weekday - 1][index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
+                                    title: Text("  ${megaTasks[activeDate_weekday][index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
                                     subtitle: Text("  Text box of the task", style: TextStyle(color: Colors.grey[700]),),
                                     trailing: Icon(Icons.check_circle, color: Colors.white,),
                                     isThreeLine: true,
@@ -158,6 +178,7 @@ class _CalendarState extends State<Calendar> {
                           final stressLevelController = TextEditingController();
                           final hourController = TextEditingController();
                           final minuteController = TextEditingController();
+                          final noteController = TextEditingController();
 
                           return showDialog(context: context, builder:(dialogContext) {
 
@@ -175,7 +196,7 @@ class _CalendarState extends State<Calendar> {
                                     activeTask.taskDateTime = DateTime(activeTask.taskDateTime.year,
                                         activeTask.taskDateTime.month, activeTask.taskDateTime.day,
                                         hour, minute);
-                                    megaTasks.elementAt(DateTime.now().weekday - 1).add(activeTask);
+                                    megaTasks.elementAt(activeDate_weekday).add(activeTask);
                                     Navigator.of(context, rootNavigator: true).pop();
                                   });
                                 },
@@ -243,7 +264,19 @@ class _CalendarState extends State<Calendar> {
                                             );
                                           },
                                         ),
-                                      )
+                                      ),
+                                      TextField(
+                                        decoration: new InputDecoration(
+                                          labelText: "Note: ",
+                                          fillColor: Colors.white,
+                                          border: new OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                            ),
+                                          ),
+                                        ),
+                                        keyboardType: TextInputType.text,
+                                        controller: noteController,
+                                      ),
                                     ],
                                 ),
                               actions: [

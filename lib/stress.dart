@@ -17,7 +17,6 @@ class _HomeState extends State<Stressometer> {
   @override
   Widget build (BuildContext context) {
     int sum=0, i = 0;
-    // print(megaTasks.length);
     megaTasks[DateTime.now().weekday - 1].forEach((num)=> sum+=num.stressLevel);
     megaTasks[DateTime.now().weekday - 1].forEach((index)=> i++);
     double avg;
@@ -34,7 +33,7 @@ class _HomeState extends State<Stressometer> {
           width: 400,
           height: 600,
           child: Image(
-            image : AssetImage('image2.png'),
+            image : AssetImage('image.png'),
             fit: BoxFit.contain,
           )
       ),
