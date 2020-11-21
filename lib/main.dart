@@ -2,8 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'all.dart';
+import 'globals.dart';
 
 void main() {
+      megaTasks = new List<List<Task>>();
+      if(megaTasks.isEmpty)
+            initList();
       runApp(MaterialApp(
             theme:
             ThemeData(

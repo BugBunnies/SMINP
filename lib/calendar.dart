@@ -1,20 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'globals.dart';
+
 import 'all.dart';
 
 //optimized to use one list for tasks
-class Task{
-  String taskName;
-  int stressLevel;
-  DateTime taskDateTime;
-  bool isMandatory;
-  int period;
 
-  Task(this.taskName, this.stressLevel, this.taskDateTime, this.isMandatory);
-}
-
-List<List<Task>> megaTasks = List<List<Task>>();
 
 //second screen -> schedule
 class Calendar extends StatefulWidget {
@@ -30,12 +22,6 @@ class Calendar extends StatefulWidget {
 
   @override
   _CalendarState createState() => _CalendarState.string(date);
-}
-
-void initList(){
-  for(int i = 0; i < 7; ++i){
-    megaTasks.add(new List<Task>());
-  }
 }
 
 final days = <String>[
@@ -63,9 +49,6 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build (BuildContext ctxt) {
 
-    if(megaTasks.isEmpty)
-      initList();
-
     final List<Color> colorCodes = <Color>[Colors.lightBlue, Colors.cyan,
       Colors.teal, Colors.green, Colors.lightGreen, Colors.lime, Colors.yellow,
       Colors.orange, Colors.deepOrange, Colors.red];
@@ -79,7 +62,6 @@ class _CalendarState extends State<Calendar> {
       else
         currentDay = days[activeDate.weekday - 1];
     }
-
 
     return Scaffold(
       backgroundColor: Colors.deepPurple[600],

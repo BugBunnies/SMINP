@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'all.dart';
 
+import 'globals.dart';
 
 class Stressometer extends StatefulWidget {
+
   @override
   State<StatefulWidget> createState () {
     return _HomeState();
@@ -11,15 +13,18 @@ class Stressometer extends StatefulWidget {
 }
 
 class _HomeState extends State<Stressometer> {
+
   @override
   Widget build (BuildContext context) {
-    final List<int> stresslevels = <int>[100, 75, 20, 32, 40, 120, 65];
     int sum=0, i = 0;
-    stresslevels.forEach((num)=> sum+=num);
-    stresslevels.forEach((index)=> i++);
-    double avg = sum/i;
-    i = avg.toInt();
-    String stringValue = i.toString();
+    // print(megaTasks.length);
+    megaTasks[DateTime.now().weekday - 1].forEach((num)=> sum+=num.stressLevel);
+    megaTasks[DateTime.now().weekday - 1].forEach((index)=> i++);
+    double avg;
+    if(i != 0)
+      avg = sum/i;
+    else avg = 0.0;
+    String stringValue = avg.toStringAsPrecision(2);
     return Scaffold(
       body: Stack(
           alignment: Alignment.center,
