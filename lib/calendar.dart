@@ -135,6 +135,8 @@ class _CalendarState extends State<Calendar> {
 
                           return showDialog(context: context, builder:(dialogContext) {
 
+                            bool _isMandatory = false;
+
                             //alert dialog button to submit whatever the user wrote
                             Widget okButton = FlatButton(
                                 onPressed: () {
@@ -149,12 +151,11 @@ class _CalendarState extends State<Calendar> {
                                         hour, minute);
                                     megaTasks.elementAt(DateTime.now().weekday - 1).add(activeTask);
                                     Navigator.of(context, rootNavigator: true).pop();
+                                    print(_isMandatory);
                                   });
                                 },
                                 child: Text("Add Task")
                             );
-
-                            bool _isMandatory = false;
 
                             return AlertDialog(
                                 title : Text("Input the Stress Level "),
