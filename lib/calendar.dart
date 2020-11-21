@@ -130,7 +130,8 @@ class _CalendarState extends State<Calendar> {
                         onPressed: (){
                           final nameController = TextEditingController();
                           final stressLevelController = TextEditingController();
-                          final dateController = TextEditingController();
+                          final hourController = TextEditingController();
+                          final minuteController = TextEditingController();
 
                           return showDialog(context: context, builder:(dialogContext) {
 
@@ -141,18 +142,19 @@ class _CalendarState extends State<Calendar> {
                                     final activeTask = Task(nameController.text,
                                         int.parse(stressLevelController.text),
                                         DateTime.now());
-                                    int hour = int.parse(dateController.text.split(':')[0]);
-                                    int minute = int.parse(dateController.text.split(':')[1]);
+                                    int hour = int.parse(hourController.text);
+                                    int minute = int.parse(minuteController.text);
                                     activeTask.taskDateTime = DateTime(activeTask.taskDateTime.year,
                                         activeTask.taskDateTime.month, activeTask.taskDateTime.day,
                                         hour, minute);
                                     megaTasks.elementAt(DateTime.now().weekday - 1).add(activeTask);
-                                    // print(activeTask.taskDateTime.hour);
                                     Navigator.of(context, rootNavigator: true).pop();
                                   });
                                 },
                                 child: Text("Add Task")
                             );
+
+                            bool _isMandatory = false;
 
                             return AlertDialog(
                                 title : Text("Input the Stress Level "),
@@ -183,16 +185,38 @@ class _CalendarState extends State<Calendar> {
                                       ),
                                       TextField(
                                         decoration: new InputDecoration(
-                                          labelText: "Date time: ",
+                                          labelText: "Hour: ",
                                           fillColor: Colors.white,
                                           border: new OutlineInputBorder(
                                             borderSide: new BorderSide(
                                             ),
                                           ),
                                         ),
-                                        keyboardType: TextInputType.text,
-                                        controller: dateController,
+                                        keyboardType: TextInputType.datetime,
+                                        controller: hourController,
                                       ),
+                                      TextField(
+                                        decoration: new InputDecoration(
+                                          labelText: "Minute: ",
+                                          fillColor: Colors.white,
+                                          border: new OutlineInputBorder(
+                                            borderSide: new BorderSide(
+                                            ),
+                                          ),
+                                        ),
+                                        keyboardType: TextInputType.datetime,
+                                        controller: minuteController,
+                                      ),
+                                      CheckboxListTile(
+                                          title: Text("Is your task mandatory?"),
+                                          tristate: true,
+                                          value: _isMandatory,
+                                          onChanged: (bool value) {
+                                            setState(() {
+                                              _isMandatory = !_isMandatory;
+                                            });
+                                        },
+                                      )
                                     ],
                                 ),
                               actions: [
