@@ -12,7 +12,6 @@ class Task{
   Task(this.taskName, this.stressLevel, this.taskDate);
 }
 
-List<Task> tasks = List<Task>();
 List<List<Task>> megaTasks = List<List<Task>>();
 
 //second screen -> schedule
@@ -33,11 +32,8 @@ class _CalendarState extends State<Calendar> {
   @override
   Widget build (BuildContext ctxt) {
 
-    if(megaTasks.isEmpty){
-      print("Time to init");
+    if(megaTasks.isEmpty)
       initList();
-      print(megaTasks);
-    }
 
     final List<Color> colorCodes = <Color>[Colors.lightBlue, Colors.cyan,
       Colors.teal, Colors.green, Colors.lightGreen, Colors.lime, Colors.yellow,
@@ -78,9 +74,8 @@ class _CalendarState extends State<Calendar> {
                     ),
                     child: ListView.separated(
                       padding: const EdgeInsets.all(10),
-                      itemCount: tasks.length,
+                      itemCount: megaTasks[DateTime.now().weekday - 1].length,
                       itemBuilder: (context, index){
-
                         return OnSlide(
                             items: <ActionItems>[
                               new ActionItems(icon: new IconButton(
@@ -144,7 +139,7 @@ class _CalendarState extends State<Calendar> {
                                         DateTime.parse(dateController.text));
                                     // tasks.add(activeTask);
                                     megaTasks.elementAt(activeTask.taskDate.weekday - 1).add(activeTask);
-                                    print(megaTasks);
+                                    print(megaTasks.elementAt(activeTask.taskDate.weekday - 1).elementAt(0).taskName);
                                     Navigator.of(context, rootNavigator: true).pop();
                                   });
                                 },

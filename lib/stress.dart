@@ -14,30 +14,37 @@ class _HomeState extends State<Stressometer> {
   @override
   Widget build (BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: <Widget>[
+      body:
           Container(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
             color: Colors.deepPurple[600],
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: EdgeInsets.only(bottom: 10.0),
-                  child: Text("Your current stress level is",
-                    style: TextStyle(
-                    color: Colors.white,
-                      fontSize: 30.0,
-                      fontWeight: FontWeight.w600
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+
+                children: [
+                    Text("Your current stress level is:",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 25.0,
+                          fontWeight: FontWeight.w600,
+                        )
+                    ),
+                  SizedBox(height: 20),
+                    Text("70",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 70.0,
+                          fontWeight: FontWeight.w600,
+                        )
                     )
-                  )
-                )
-              ]
-            )
-          )
-        ]
-      ),
-      drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
+                  ],
+              ),
+          ),
+        drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),
     );
   }
 }
