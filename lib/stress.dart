@@ -95,32 +95,34 @@ class _HomeState extends State<Stressometer> {
     var listOfNonMandatoryTasks = GetListOfNonMandatory();
     int index = 0;
     while (i > 5 && listOfNonMandatoryTasks != null && listOfNonMandatoryTasks.length != 0){
-      print("i= ");
-      print(i);
-      print(listOfNonMandatoryTasks.length);
       //after removing one stressful activity we could be still above max avg
       int maximum = -1;
       //find max in list of stresses
       //bool mandatory = false;
-      for(var j=0; j<listOfNonMandatoryTasks.length; j++){
+      for(var j=0; j < listOfNonMandatoryTasks.length; j++){
         if(maximum < listOfNonMandatoryTasks[j]){
           maximum = listOfNonMandatoryTasks[j];
         }
-      }for (var i = 0; i<listOfNonMandatoryTasks.length; i++){
-        if (maximum == listOfNonMandatoryTasks[i])
+      }
+
+      print("maximum: $maximum");
+
+      for (var i = 0; i < listOfNonMandatoryTasks.length; i++){
+        if (maximum == megaTasks[DateTime
+            .now()
+            .weekday - 1][i].stressLevel)
           index = i;
       }
       int sum = 0;
       int nr = 0;
       for(var i = 0; i < listOfNonMandatoryTasks.length; i++) {
-        if (index == i) {
+        if (index != i) {
           sum = sum + listOfNonMandatoryTasks[i];
           nr = nr + 1;
         }
       }
       i = sum/nr;
-      print("index");
-      print(index);
+      print("index: $index");
       listOfNonMandatoryTasks.removeAt(index);
     }
     RemoveElementFromMegaTasks(listOfNonMandatoryTasks, index);

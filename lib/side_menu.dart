@@ -6,28 +6,20 @@ class SideMenu extends StatelessWidget {
   final List<Widget> components;
   SideMenu(this.components);
 
+  final iconList = [Icons.calendar_today, Icons.view_week, Icons.more_time];
+
   @override
   Widget build(BuildContext context) {
+    int index = 0;
     return Drawer(
         child: SafeArea(
               child:
                   Container(
-                    decoration: BoxDecoration(
-                        gradient: RadialGradient(
-                          center: Alignment.topCenter,
-                          colors: [
-                            Colors.purple[500],
-                            Colors.purple[500],
-                            Colors.purple[600],
-                            Colors.purple[700],
-                            Colors.purple[800],
-                            Colors.purple[900],
-                            Colors.white,
-                          ],
-                          stops: [ 0.05,0.1,0.15,0.2,0.25,0.3,0.3],
-                          radius: 2,
-                        ),
-                    ),
+                      decoration: BoxDecoration(
+                        image: DecorationImage(
+                            alignment: Alignment.topCenter,
+                            image: AssetImage('image3.png')),
+                      ),
                     child:
                   Column(
                     children: <Widget> [
@@ -38,15 +30,15 @@ class SideMenu extends StatelessWidget {
                           height: 100,
                           child:
                           DrawerHeader(
-                            child: Text(
-                              'Chill Menu',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
+                            child: Center(
+
+                              child : Text( 'SMInP HUB',  style: TextStyle(color: Colors.white,fontSize: 24,),
                               ),
                             ),
-                          )
+                          ),
                       ),
+
+                      SizedBox(height: 55),
                   GridView.count(
                     primary: false,
                     padding: const EdgeInsets.all(20),
@@ -78,8 +70,26 @@ class SideMenu extends StatelessWidget {
                               
                       ),
                             padding: const EdgeInsets.all(8),
-                            child: Text(value.toString()),
 
+                            child: Align(
+                      alignment: FractionalOffset.bottomCenter,
+                      child: Padding(
+                      padding: EdgeInsets.only(bottom: 10.0),
+                        child : Column(
+                                children: [
+                                  SizedBox(height: 25,),
+                                  Icon(
+                                    iconList[index++], size: 40,
+                                  ),
+                                  SizedBox(height: 10,),
+                                  Text(
+                                      value.toString()
+                                  ),
+                                ]
+                              ),
+
+                            )
+                            )
                           )
                       );
                     }).toList(),

@@ -61,7 +61,6 @@ Future<List<List<Task>>> readList() async {
 
     for(int i = 0; i < contents.length; ++i){
       Task activeTask = stringToTask(contents[i]);
-      print(activeTask.toString());
       megaTasks[activeTask.taskDateTime.weekday - 1].add(activeTask);
     }
   }

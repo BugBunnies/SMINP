@@ -168,7 +168,14 @@ class _CalendarState extends State<Calendar> {
 
                             //alert dialog button to submit whatever the user wrote
                             Widget okButton = FlatButton(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(18.0),
+                                  side: BorderSide(color: Colors.deepPurple[900]),
+
+                                ),
+                                color: Colors.deepPurple[600],
                                 onPressed: () {
+                                  color: Colors.deepPurple[900];
                                   setState(() {
                                     final activeTask = Task(nameController.text,
                                         int.parse(stressLevelController.text),
@@ -185,85 +192,109 @@ class _CalendarState extends State<Calendar> {
                                     Navigator.of(context, rootNavigator: true).pop();
                                   });
                                 },
-                                child: Text("Add Task")
+                                child: Text("Add Task",style:TextStyle(color : Colors.white, fontWeight: FontWeight.bold))
                             );
 
                             return AlertDialog(
-                                title : Text("Input the Stress Level: "),
-                                content: Column(
-                                    children: [
-                                      TextField(
-                                        decoration: new InputDecoration(
-                                          labelText: "Enter task: ",
-                                          fillColor: Colors.white,
-                                          border: new OutlineInputBorder(
-                                            borderSide: new BorderSide(
-                                            ),
-                                          ),
+
+                              shape: RoundedRectangleBorder(borderRadius:
+                              BorderRadius.all(Radius.circular(40))),
+                              title : Text("Input your task :  "),
+
+                              content:SingleChildScrollView(
+
+                                child : Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(height: 40),
+                                    TextField(
+                                      decoration: InputDecoration(
+                                        labelText: " Name of the task",
+                                        fillColor: Colors.white,
+                                        border: InputBorder.none,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                          borderSide: BorderSide(color: Colors.deepPurple[600]),
                                         ),
-                                        controller: nameController,
-                                      ),
-                                      TextField(
-                                          decoration: new InputDecoration(
-                                            labelText: "Stress Level: ",
-                                            fillColor: Colors.white,
-                                            border: new OutlineInputBorder(
-                                              borderSide: new BorderSide(
-                                              ),
-                                            ),
-                                          ),
-                                          keyboardType: TextInputType.number,
-                                          controller: stressLevelController,
-                                      ),
-                                      TextField(
-                                        decoration: new InputDecoration(
-                                          labelText: "Hour: ",
-                                          fillColor: Colors.white,
-                                          border: new OutlineInputBorder(
-                                            borderSide: new BorderSide(
-                                            ),
-                                          ),
-                                        ),
-                                        keyboardType: TextInputType.datetime,
-                                        controller: hourController,
-                                      ),
-                                      TextField(
-                                        decoration: new InputDecoration(
-                                          labelText: "Minute: ",
-                                          fillColor: Colors.white,
-                                          border: new OutlineInputBorder(
-                                            borderSide: new BorderSide(
-                                            ),
-                                          ),
-                                        ),
-                                        keyboardType: TextInputType.datetime,
-                                        controller: minuteController,
-                                      ),
-                                      StatefulBuilder(
-                                        builder: (context, _setState) => CheckboxListTile(
-                                          title: Text("Is your task mandatory?"),
-                                          tristate: true,
-                                          value: _isMandatory,
-                                          onChanged: (bool value) {
-                                            _setState(() => _isMandatory = !_isMandatory,
-                                            );
-                                          },
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                          borderSide: BorderSide(color: Colors.deepPurple[600]),
                                         ),
                                       ),
-                                      TextField(
-                                        decoration: new InputDecoration(
-                                          labelText: "Note: ",
-                                          fillColor: Colors.white,
-                                          border: new OutlineInputBorder(
-                                            borderSide: new BorderSide(
-                                            ),
-                                          ),
+                                      controller: nameController,
+                                    ),
+                                    SizedBox(height: 40),
+                                    TextField(
+                                      decoration: InputDecoration(
+                                        labelText: " Stress level",
+                                        fillColor: Colors.white,
+                                        border: InputBorder.none,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                          borderSide: BorderSide(color: Colors.deepPurple[600]),
                                         ),
-                                        keyboardType: TextInputType.text,
-                                        controller: noteController,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                          borderSide: BorderSide(color: Colors.deepPurple[600]),
+                                        ),
                                       ),
-                                    ],
+                                      keyboardType: TextInputType.number,
+                                      controller: stressLevelController,
+                                    ),
+                                    SizedBox(height: 40),
+                                    TextField(
+                                      decoration: InputDecoration(
+                                        labelText: " Hour",
+                                        fillColor: Colors.white,
+                                        border: InputBorder.none,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                          borderSide: BorderSide(color: Colors.deepPurple[600]),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                          borderSide: BorderSide(color: Colors.deepPurple[600]),
+                                        ),
+                                      ),
+                                      keyboardType: TextInputType.datetime,
+                                      controller: hourController,
+                                    ),
+                                    SizedBox(height: 40),
+                                    TextField(
+                                      decoration: InputDecoration(
+                                        labelText: " Minute",
+                                        fillColor: Colors.white,
+                                        border: InputBorder.none,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                          borderSide: BorderSide(color: Colors.deepPurple[600]),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.all(Radius.circular(40.0)),
+                                          borderSide: BorderSide(color: Colors.deepPurple[600]),
+                                        ),
+                                      ),
+                                      keyboardType: TextInputType.datetime,
+                                      controller: minuteController,
+                                    ),
+                                    SizedBox(height: 40),
+                                    StatefulBuilder(
+                                      builder: (context, _setState) => CheckboxListTile(
+                                        title: Text("Is your task mandatory?"),
+                                        tristate: true,
+                                        value: _isMandatory,
+                                        onChanged: (bool value) {
+                                          _setState(() => _isMandatory = !_isMandatory,
+                                          );
+                                        },
+                                      ),
+                                    )
+
+                                  ],
+
                                 ),
+
+                              ),
                               actions: [
                                 okButton
                               ],
