@@ -13,9 +13,6 @@ class Calendar extends StatefulWidget {
   Calendar.string(this.date);
   Calendar();
 
-  // @override
-  // _CalendarState createState() => _CalendarState();
-
   @override
   _CalendarState createState() => _CalendarState.string(date);
 }
@@ -309,7 +306,6 @@ class _CalendarState extends State<Calendar> {
               );
             },
           )
-
         ],
       ),
       drawer: SideMenu([Calendar(), WeeklyTasks(), Stressometer()]),

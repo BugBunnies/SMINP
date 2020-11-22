@@ -31,11 +31,11 @@ class _WeeklyTasksState extends State<WeeklyTasks> {
 
         children: <Widget>[
           Container(
-              width: 400,
-              height: 600,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               child: Image(
-                image : AssetImage('image.png'),
-                fit: BoxFit.contain,
+                image : AssetImage('background.png'),
+                fit: BoxFit.fitWidth,
               )
           ),
 
