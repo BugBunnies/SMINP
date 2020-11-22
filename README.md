@@ -1,6 +1,6 @@
-# smip
+# SMINP
 
-A new Flutter application.
+A new Flutter application for better stress management.
 
 ## Getting Started
 
