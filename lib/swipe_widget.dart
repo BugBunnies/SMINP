@@ -60,7 +60,6 @@ class _OnSlideState extends State<OnSlide> {
         });
       }
     }
-
     return true;
   }
 

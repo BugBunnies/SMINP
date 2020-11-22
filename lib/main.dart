@@ -8,11 +8,13 @@ void main() {
       megaTasks = new List<List<Task>>();
       if(megaTasks.isEmpty)
             initList();
+
       runApp(MaterialApp(
             theme:
             ThemeData(
-                primaryColor: Colors.lightBlue,
-                accentColor: Colors.black12
+                  primaryColor: Colors.lightBlue,
+                  accentColor: Colors.black12,
+                  fontFamily: 'Montserrat',
             ),
             debugShowCheckedModeBanner: false,
             home: SplashScreen(),

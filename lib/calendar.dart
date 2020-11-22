@@ -1,18 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 import 'globals.dart';
-
 import 'all.dart';
-
-//optimized to use one list for tasks
-
 
 //second screen -> schedule
 class Calendar extends StatefulWidget {
 
   String date = "";
-
 
   Calendar.string(this.date);
   Calendar();
@@ -22,22 +18,6 @@ class Calendar extends StatefulWidget {
 
   @override
   _CalendarState createState() => _CalendarState.string(date);
-}
-
-final days = <String>[
-  'Monday',
-  'Tuesday',
-  'Wednesday',
-  'Thursday',
-  'Friday',
-  'Saturday',
-  'Sunday'
-];
-
-int getInt(String day){
-  for(int i = 0; i < days.length; ++i)
-    if(days[i] == day)
-      return i;
 }
 
 class _CalendarState extends State<Calendar> {
@@ -78,26 +58,23 @@ class _CalendarState extends State<Calendar> {
     else
       activeDate_weekday = activeDate.weekday - 1;
 
-    print(activeDate_weekday);
-
     return Scaffold(
       backgroundColor: Colors.deepPurple[600],
       body: Stack(
         alignment: Alignment.center,
-
         children: <Widget>[
           Container(
-              height: 1000,
-              width: 700,
+              height: MediaQuery.of(context).size.height,
+              width: MediaQuery.of(context).size.width,
               child: Image(
                 image : AssetImage('background.png'),
-                fit: BoxFit.fitHeight,
+                fit: BoxFit.fitWidth,
               )
           ),
 
           Positioned(
             child:
-            Text("${currentDay}'s tasks", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
+            Text("$currentDay's tasks", style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
             top: 40,
             left: 20,
           ),
@@ -125,7 +102,11 @@ class _CalendarState extends State<Calendar> {
                                   icon: new Icon(Icons.delete),
                                   onPressed: () {}, color: Colors.red,
                                 ),
-                                onPress: (){}, backgroudColor: Colors.white),
+                                onPress: (){
+                                setState(() {
+                                  megaTasks[activeDate_weekday].removeAt(index);
+                                });
+                                }, backgroudColor: Colors.white),
                               new ActionItems(icon: new IconButton(
                                 icon: new Icon(Icons.edit),
                                 onPressed: () {}, color: Colors.green,
@@ -156,7 +137,8 @@ class _CalendarState extends State<Calendar> {
                               child: Center(
                                   child: ListTile(
                                     // title: Text("  ${megaTasks[DateTime.now().weekday - 1][index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
-                                    title: Text("  ${megaTasks[activeDate_weekday][index].taskName}", style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
+                                    title: Text("  ${megaTasks[activeDate_weekday][index].taskName}",
+                                        style: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold)),
                                     subtitle: Text("  Text box of the task", style: TextStyle(color: Colors.grey[700]),),
                                     trailing: Icon(Icons.check_circle, color: Colors.white,),
                                     isThreeLine: true,
@@ -197,6 +179,9 @@ class _CalendarState extends State<Calendar> {
                                         activeTask.taskDateTime.month, activeTask.taskDateTime.day,
                                         hour, minute);
                                     megaTasks.elementAt(activeDate_weekday).add(activeTask);
+
+                                    writeList();
+
                                     Navigator.of(context, rootNavigator: true).pop();
                                   });
                                 },
@@ -204,7 +189,7 @@ class _CalendarState extends State<Calendar> {
                             );
 
                             return AlertDialog(
-                                title : Text("Input the Stress Level "),
+                                title : Text("Input the Stress Level: "),
                                 content: Column(
                                     children: [
                                       TextField(

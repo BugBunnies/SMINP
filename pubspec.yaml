@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+  path_provider: any
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -51,10 +51,16 @@ flutter:
   - oita.png
   - background.png
 
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Montserrat-Regular.ttf
+
 flutter_icons:
   android: icon_launcher
   ios: true
   image_path: oita.png
+
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
